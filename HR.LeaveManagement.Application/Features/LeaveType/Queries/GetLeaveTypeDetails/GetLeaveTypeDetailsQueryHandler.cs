@@ -11,13 +11,13 @@ namespace HR.LeaveManagement.Application.Features.LeaveType.Queries.GetLeaveType
 
         public GetLeaveTypeDetailsQueryHandler(IMapper mapper, ILeaveTypeRepository leaveTypeRepository)
         {
-            this._mapper = mapper;
-            this._leaveTypeRepository = leaveTypeRepository;
+            _mapper = mapper;
+            _leaveTypeRepository = leaveTypeRepository;
         }
         public async Task<LeaveTypeDetailsDto> Handle(GetLeaveTypeDetailsQuery request, CancellationToken cancellationToken)
         {
-            var leaveTypeDetail = await _leaveTypeRepository.GetByIdAsync(request.Id);
-            var data = _mapper.Map<LeaveTypeDetailsDto>(leaveTypeDetail);
+            var leaveType = await _leaveTypeRepository.GetByIdAsync(request.Id);
+            var data = _mapper.Map<LeaveTypeDetailsDto>(leaveType);
             return data;
         }
     }   
