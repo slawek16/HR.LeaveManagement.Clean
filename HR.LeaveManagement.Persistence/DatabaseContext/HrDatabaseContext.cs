@@ -8,7 +8,7 @@ namespace HR.LeaveManagement.Persistence.DatabaseContext
     {
         public HrDatabaseContext(DbContextOptions<HrDatabaseContext> options) : base(options) { }
         public DbSet<LeaveType> LeaveTypes { get; set; }
-        public DbSet<LeaveAllocation> LeaveAllocation { get; set; }
+        public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
         public DbSet<LeaveRequest> LeaveRequest { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
