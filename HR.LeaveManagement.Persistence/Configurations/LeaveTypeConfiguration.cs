@@ -18,6 +18,9 @@ namespace HR.LeaveManagement.Persistence.Configurations
                     DateModified = DateTime.Now,
                 }
                 );
+            builder.Property(q => q.Name)
+                .IsRequired()
+                .HasMaxLength(100);
         }
     }
-}
+}   
