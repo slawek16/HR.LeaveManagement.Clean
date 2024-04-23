@@ -9,6 +9,10 @@ namespace HR.LeaveManagement.Application.Features.LeaveType.Commands.UpdateLeave
 
         public UpdateLeaveTypeCommandValidator(ILeaveTypeRepository leaveTypeRepository)
         {
+            RuleFor(p => p.Id)
+                .NotNull()
+                .MustAsync(LeaveTypeMustExist);
+
             RuleFor(p => p.Name).NotEmpty().WithMessage("{PropertyName} is required")
                 .NotNull()
                 .MaximumLength(70).WithMessage("{PropertyName} must be fewer than 70 characters");
@@ -21,6 +25,13 @@ namespace HR.LeaveManagement.Application.Features.LeaveType.Commands.UpdateLeave
 
             _leaveTypeRepository = leaveTypeRepository;
         }
+
+        private async Task<bool> LeaveTypeMustExist(int id, CancellationToken token)
+        {
+            Domain.LeaveType leaveType = await _leaveTypeRepository.GetByIdAsync(id);
+            return leaveType != null;
+        }
+
         private Task<bool> LeaveTypeNameUnique(UpdateLeaveTypeCommand command, CancellationToken token)
         {
             return _leaveTypeRepository.IsLeaveTypeUnique(command.Name);
