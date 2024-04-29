@@ -1,4 +1,8 @@
 ﻿using HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.CreateLeaveAllocation;
+using HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.DeleteLeaveAllocation;
+using HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.UpdateLeaveAllocation;
+using HR.LeaveManagement.Application.Features.LeaveAllocation.Queries.GetAllLeaveAllocations;
+using HR.LeaveManagement.Application.Features.LeaveAllocation.Queries.GetLeaveAllocationDetails;
 using HR.LeaveManagement.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,16 +23,18 @@ namespace HR.LeaveManagement.Api.Controllers
         }
         // GET: api/<LeaveAllocationsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<List<LeaveAllocationDto>>> Get()
         {
-            return new string[] { "value1", "value2" };
+            List<LeaveAllocationDto> leaveAllocations = await _mediator.Send(new GetLeaveAllocationQuery());
+            return Ok(leaveAllocations);
         }
 
         // GET api/<LeaveAllocationsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{id}")] 
+        public async Task<ActionResult<LeaveAllocationDetailsDto>> Get(int id)
         {
-            return "value";
+            LeaveAllocationDetailsDto leaveAllocation = await _mediator.Send(new GetLeaveAllocationDetailsQuery(id));
+            return Ok(leaveAllocation);
         }
 
         // POST api/<LeaveAllocationsController>
@@ -43,14 +49,22 @@ namespace HR.LeaveManagement.Api.Controllers
 
         // PUT api/<LeaveAllocationsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Put(UpdateLeaveAllocationCommand updateLeaveAllocationCommand)
         {
+            await _mediator.Send(updateLeaveAllocationCommand);
+            return NoContent();
         }
 
         // DELETE api/<LeaveAllocationsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete(int id)
         {
+            var response = _mediator.Send(new DeleteLeaveAllocationCommand(id));
+            return NoContent();
         }
     }
 }

@@ -7,12 +7,10 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.Delet
 {
     public class DeleteLeaveAllocationCommandHandler : IRequestHandler<DeleteLeaveAllocationCommand, Unit>
     {
-        private readonly IMapper _mapper;
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
 
-        public DeleteLeaveAllocationCommandHandler(IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository)
+        public DeleteLeaveAllocationCommandHandler(ILeaveAllocationRepository leaveAllocationRepository)
         {
-            _mapper = mapper;
             _leaveAllocationRepository = leaveAllocationRepository;
         }
         public async Task<Unit> Handle(DeleteLeaveAllocationCommand request, CancellationToken cancellationToken)
@@ -20,10 +18,10 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.Delet
             DeleteLeaveAllocationCommandValidator validations = new DeleteLeaveAllocationCommandValidator(_leaveAllocationRepository);
             var validationResults = await validations.ValidateAsync(request, cancellationToken);
             if (validationResults.Errors.Any())
-                throw new BadRequestException("Delete leave allocation error", validationResults);
+                throw new BadRequestException(typeof(DeleteLeaveAllocationCommand).Name, validationResults);
 
-            var leaveAllocation = _mapper.Map<Domain.LeaveAllocation>(request);
-            await _leaveAllocationRepository.DeleteAsync(leaveAllocation);
+            var leaveAllocationToDelete = await _leaveAllocationRepository.GetByIdAsync(request.Id) ?? throw new NotFoundException(nameof(Domain.LeaveAllocation), request.Id);
+            await _leaveAllocationRepository.DeleteAsync(leaveAllocationToDelete);
 
             return Unit.Value;
         }

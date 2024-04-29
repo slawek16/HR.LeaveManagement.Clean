@@ -17,11 +17,11 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Queries.GetAll
         public async Task<List<LeaveAllocationDto>> Handle(GetLeaveAllocationQuery request, CancellationToken cancellationToken)
         {
             //Get all records from repository
-            var leaveAllocations = await _repository.GetAsync();
+            var leaveAllocations = await _repository.GetLeaveAllocationWithDetails();
 
             //return all results
-            var mapped = _mapper.Map<List<LeaveAllocationDto>>(leaveAllocations);
-            return mapped;
+            var leaveAllocationsDto = _mapper.Map<List<LeaveAllocationDto>>(leaveAllocations);
+            return leaveAllocationsDto;
         }
     }
 }

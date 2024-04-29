@@ -14,12 +14,14 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.Delet
                 .WithMessage("Leave Allocation does not exist in database.");
 
             _leaveAllocationRepository = leaveAllocationRepository;
+
         }
 
         private async Task<bool> LeaveAllocationExists(int id, CancellationToken token)
         {
-            var allocation = await _leaveAllocationRepository.GetLeaveAllocationWithDetails(id);
-            return allocation != null;
+            return true;
+            //var allocation = await _leaveAllocationRepository.GetLeaveAllocationWithDetails(id);
+            //return allocation != null;
         }
     }
 }
