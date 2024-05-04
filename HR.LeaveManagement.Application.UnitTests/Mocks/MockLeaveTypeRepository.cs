@@ -31,12 +31,18 @@ namespace HR.LeaveManagement.Application.UnitTests.Mock
             };
 
             Mock<ILeaveTypeRepository> mockRepo = new();
+
             mockRepo.Setup(r => r.GetAsync()).ReturnsAsync(leaveTypes);
             mockRepo.Setup(r => r.CreateAsync(It.IsAny<LeaveType>()))
                 .Returns((LeaveType leaveType) =>
                 {
                     leaveTypes.Add(leaveType);
                     return Task.CompletedTask;
+                });
+            mockRepo.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
+                .Returns((int id) =>
+                {
+                    return Task.FromResult(leaveTypes.First());
                 });
 
             return mockRepo;
