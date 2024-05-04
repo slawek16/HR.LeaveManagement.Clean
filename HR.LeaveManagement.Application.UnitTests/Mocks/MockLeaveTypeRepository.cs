@@ -2,11 +2,11 @@
 using HR.LeaveManagement.Domain;
 using Moq;
 
-namespace HR.LeaveManagement.Application.UnitTests.Mocks
+namespace HR.LeaveManagement.Application.UnitTests.Mock
 {
     public class MockLeaveTypeRepository
     {
-        public static Mock<ILeaveTypeRepository> GetLeaveTypes()
+        public static Mock<ILeaveTypeRepository> GetMockLeaveTypesRepository()
         {
             List<LeaveType> leaveTypes = new()
             {
