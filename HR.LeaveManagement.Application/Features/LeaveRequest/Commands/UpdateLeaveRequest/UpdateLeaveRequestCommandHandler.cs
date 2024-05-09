@@ -3,7 +3,7 @@ using HR.LeaveManagement.Application.Contracts.Email;
 using HR.LeaveManagement.Application.Contracts.Logging;
 using HR.LeaveManagement.Application.Contracts.Persistence;
 using HR.LeaveManagement.Application.Exceptions;
-using HR.LeaveManagement.Application.Model;
+using HR.LeaveManagement.Application.Model.Email;
 using HR.LeaveManagement.Domain;
 using MediatR;
 
